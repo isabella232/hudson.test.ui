@@ -34,7 +34,7 @@
         <jetty.stop.port>6001</jetty.stop.port>
         <test.target.host>localhost</test.target.host>
         <test.target.port>6002</test.target.port>
-        <test.target.contextroot>hudson</test.target.contextroot>
+        <test.target.contextroot></test.target.contextroot>
     </properties>
 
     <dependencies>
