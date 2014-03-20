@@ -39,7 +39,7 @@ public abstract class BaseUITest{
     /**
      * Base application URL.
      */
-    public static final String BASE_URL = "http://localhost:6002/hudson";
+    public static final String BASE_URL = "http://localhost:6002/";
 
     /**
      * Default wait period.
