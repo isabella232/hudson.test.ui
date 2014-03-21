@@ -59,6 +59,49 @@
 	<artifactId>xpath-provider</artifactId>
 	<version>1.0.2</version>
         </dependency>
+        <!-- Featured Plugins -->
+        <!-- TODO: Put his into a separate project as these are non-core libraries? -->
+        <dependency>
+	<groupId>org.hudsonci.plugins</groupId>
+	<artifactId>cvs</artifactId>
+	<version>2.2.0</version>
+        </dependency>
+        <dependency>
+	<groupId>org.hudsonci.plugins</groupId>
+	<artifactId>git</artifactId>
+	<version>2.2.5</version>
+        </dependency>
+        <dependency>
+	<groupId>org.hudsonci.plugins</groupId>
+	<artifactId>groovy-support-plugin</artifactId>
+	<version>3.0.3</version>
+        </dependency>
+        <dependency>
+	<groupId>org.hudsonci.plugins</groupId>
+	<artifactId>maven3-plugin</artifactId>
+	<version>3.0.3</version>
+        </dependency>
+        <dependency>
+	<groupId>org.hudsonci.plugins</groupId>
+	<artifactId>maven3-snapshots</artifactId>
+	<version>3.0.3</version>
+        </dependency>
+        <dependency>
+	<groupId>org.hudsonci.plugins</groupId>
+	<artifactId>ssh-slaves</artifactId>
+	<version>3.0.2</version>
+        </dependency>
+        <dependency>
+	<groupId>org.hudsonci.plugins</groupId>
+	<artifactId>subversion</artifactId>
+	<version>2.3.8-h-1</version>
+        </dependency>
+        <dependency>
+	<groupId>org.hudsonci.plugins</groupId>
+	<artifactId>windows-slaves-plugin</artifactId>
+	<version>1.0</version>
+        </dependency>
+        <!-- Test Infrastructure -->
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
@@ -96,6 +139,7 @@
                         </goals>
                         <configuration>
                             <artifactItems>
+                                <!-- Copy core plugins into hudson home -->
                                 <artifactItem>
                                     <groupId>org.eclipse.hudson</groupId>
                                     <artifactId>hudson-war</artifactId>
@@ -121,6 +165,63 @@
                                 <artifactItem>
                                     <groupId>org.hudsonci.xpath</groupId>
 	                            <artifactId>xpath-provider</artifactId>
+                                    <type>hpi</type>
+                                    <overWrite>true</overWrite>
+                                    <outputDirectory>${hudson.home}/plugins</outputDirectory>
+                                </artifactItem>
+                                <!-- Copy featured plugins into hudson home -->
+                                <artifactItem>
+                                    <groupId>org.hudsonci.plugins</groupId>
+                                    <artifactId>cvs</artifactId>
+                                    <type>hpi</type>
+                                    <overWrite>true</overWrite>
+                                    <outputDirectory>${hudson.home}/plugins</outputDirectory>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.hudsonci.plugins</groupId>
+                                    <artifactId>git</artifactId>
+                                    <type>hpi</type>
+                                    <overWrite>true</overWrite>
+                                    <outputDirectory>${hudson.home}/plugins</outputDirectory>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.hudsonci.plugins</groupId>
+                                    <artifactId>groovy-support-plugin</artifactId>
+                                    <type>hpi</type>
+                                    <overWrite>true</overWrite>
+                                    <outputDirectory>${hudson.home}/plugins</outputDirectory>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.hudsonci.plugins</groupId>
+                                    <artifactId>maven3-plugin</artifactId>
+                                    <type>hpi</type>
+                                    <overWrite>true</overWrite>
+                                    <outputDirectory>${hudson.home}/plugins</outputDirectory>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.hudsonci.plugins</groupId>
+                                    <artifactId>maven3-snapshots</artifactId>
+                                    <type>hpi</type>
+                                    <overWrite>true</overWrite>
+                                    <outputDirectory>${hudson.home}/plugins</outputDirectory>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.hudsonci.plugins</groupId>
+                                    <artifactId>ssh-slaves</artifactId>
+                                    <type>hpi</type>
+                                    <overWrite>true</overWrite>
+                                    <outputDirectory>${hudson.home}/plugins</outputDirectory>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.hudsonci.plugins</groupId>
+                                    <artifactId>subversion</artifactId>
+                                    <type>hpi</type>
+                                    <overWrite>true</overWrite>
+                                    <outputDirectory>${hudson.home}/plugins</outputDirectory>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.hudsonci.plugins</groupId>
+                                    <artifactId>windows-slaves-plugin</artifactId>
                                     <type>hpi</type>
                                     <overWrite>true</overWrite>
                                     <outputDirectory>${hudson.home}/plugins</outputDirectory>
