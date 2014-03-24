@@ -40,13 +40,10 @@ public class ConfigureHudsonTest extends BaseUITest {
     private static final String BUILD_SUCCESS_TEXT = "Finished: SUCCESS";
     private static final String BUILD_FAILURE_TEXT = "Finished: FAILURE";
 
-    //TODO enable me when JDK installer will be fixed
     @Test
-    @Ignore
     public void testAddJDK() throws Exception {
-        String addJDKButtonXpath = "//button[contains(text(), 'Add JDK')]";
+        String addJDKButtonXpath = "//input[@value='Add JDK']";
         String jdkName = "jdk_6_24";
-//        String jdkVersion = "6 Update 22";
         Selenium selenium = getSelenium();
         selenium.open("/");
         //Open Manage Hudson page
@@ -63,15 +60,12 @@ public class ConfigureHudsonTest extends BaseUITest {
         //name is pre-validated. Non-Empty value is required. Check that error is displayed
         assertTrue(selenium.isTextPresent("Required"));
         //Validate for accept licence checkbox presence
-        selenium.isElementPresent("//input[@name='_.acceptLicense']");
-        assertTrue(selenium.isTextPresent("You must agree to the license to download the JDK."));
+        selenium.isElementPresent("//input[@name='Install automatically']");
+        assertTrue(selenium.isTextPresent("Install from Oracle"));
         //Enter required jdk name
         selenium.type("_.name", jdkName);
-//        selenium.select("_.id", jdkVersion);
-        //Need to accept oracle licence
-        selenium.click("_.acceptLicense");
         //Click save button.
-        selenium.click("//button[contains(text(), 'Save')]");
+        selenium.click("name=Submit"); 
         waitForTextPresent("Manage Hudson", null);
         selenium.click("link=Manage Hudson");
         waitForTextPresent("Configure System", null);
@@ -79,11 +73,11 @@ public class ConfigureHudsonTest extends BaseUITest {
 
         //Re-validate changes
         assertEquals(selenium.getValue("_.name"), jdkName);
-//        assertEquals(selenium.getSelectedLabel("_.id"), jdkVersion);
         //Click delete installer and save button.
-        selenium.click("//button[contains(text(), 'Delete JDK')]");
-        selenium.click("//button[contains(text(), 'Save')]");
+        selenium.click("//input[@value='Delete JDK']");
+        selenium.click("name=Submit"); 
     }
+
 
     @Test
     public void testChangeSystemMessage() throws Exception {
@@ -97,7 +91,7 @@ public class ConfigureHudsonTest extends BaseUITest {
         waitForTextPresent("System Message", null);
         //Enter a simple message and save
         selenium.type("system_message", "A simple test message\n\n<p>With some html tags</p>");
-        selenium.click("//button[contains(text(), 'Save')]");
+        selenium.click("name=Submit"); 
         selenium.waitForPageToLoad("30000");
         //Verify the message appears
         waitForTextPresent("A simple test message With some html tags", null);
@@ -108,8 +102,8 @@ public class ConfigureHudsonTest extends BaseUITest {
         Selenium selenium = getSelenium();
         selenium.open("/");
         //Check that we have two executors to start with
-        waitForElementPresence("//table[@id='executors']/tbody[2]/tr[1]/th[1]");
-        assertEquals("Status 0/2", selenium.getText("//table[@id='executors']/tbody[2]/tr[1]/th[1]"));
+        waitForElementPresence("//div[@id='executors']/table/tbody/tr/th");
+        assertEquals("Status 0/2", selenium.getText("//div[@id='executors']/table/tbody/tr/th"));
         //Navigate to Configure System page
         selenium.click("link=Manage Hudson");
         waitForTextPresent("Configure System", null);
@@ -119,11 +113,11 @@ public class ConfigureHudsonTest extends BaseUITest {
         assertEquals(selenium.getValue("_.numExecutors"), "2");
         selenium.type("_.numExecutors", "1");
         //Save
-        selenium.click("//button[contains(text(), 'Save')]");
+        selenium.click("name=Submit"); 
         waitForTextPresent("Manage Hudson", null);
         //Verify the number of excutors now
-        waitForElementPresence("//table[@id='executors']/tbody[2]/tr[1]/th[1]");
-        assertEquals("Status 0/1", selenium.getText("//table[@id='executors']/tbody[2]/tr[1]/th[1]"));
+        waitForElementPresence("//div[@id='executors']/table/tbody/tr/th");
+        assertEquals("Status 0/1", selenium.getText("//div[@id='executors']/table/tbody/tr/th"));
     }
 
     @Test
@@ -137,18 +131,21 @@ public class ConfigureHudsonTest extends BaseUITest {
         selenium.click("link=Configure System");
         waitForTextPresent("System Message", null);
         selenium.click(GLOBAL_PROPS_LBL_SELECT_EXP);
-        selenium.click("//button[contains(text(), 'Save')]");
+        selenium.click("name=Submit"); 
         //Navigate to Configure System page
         waitForTextPresent("Manage Hudson", null);
         selenium.click("link=Manage Hudson");
         waitForTextPresent("Configure System", null);
         selenium.click("link=Configure System");
         waitForTextPresent("System Message", null);
-        selenium.click("//tr[38]/td[3]/div/span/span/button");
+        if ((selenium.isElementPresent("id=cb3")) && (!selenium.isChecked("id=cb3"))) {
+            selenium.click("id=cb3"); 
+        }
+        selenium.click("//input[@value='Add']"); 
         waitForTextPresent("List of key-value pairs", null);
         selenium.type("env.key", "TEST");
         selenium.type("env.value", "Hello");
-        selenium.click("//button[contains(text(), 'Save')]");
+        selenium.click("name=Submit"); 
 
         //Create Job that uses TEST property
         waitForTextPresent("Manage Hudson", null);
@@ -158,7 +155,7 @@ public class ConfigureHudsonTest extends BaseUITest {
         selenium.waitForPageToLoad("30000");
         selenium.type("name", "global-prop-test");
         selenium.click("mode");
-        selenium.click("//button[@type='button']");
+        selenium.click("id=ok");
         selenium.waitForPageToLoad("30000");
         selenium.click("//span[@id='yui-gen2']/span/button");
         if (SystemUtils.isWindows()) {
@@ -166,14 +163,14 @@ public class ConfigureHudsonTest extends BaseUITest {
             selenium.click("link=Execute Windows batch command");
             waitForTextPresent("Execute Windows batch command", null);
             selenium.type("command", "echo %TEST%");
-            selenium.click("//button[contains(text(), 'Save')]");
+            selenium.click("name=Submit"); 
             selenium.waitForPageToLoad("30000");
         } else {
             //On non-windows use shell
             selenium.click("link=Execute shell");
             waitForTextPresent("Execute shell", null);
             selenium.type("command", "echo $TEST");
-            selenium.click("//button[contains(text(), 'Save')]");
+            selenium.click("name=Submit"); 
             selenium.waitForPageToLoad("30000");
         }
         //Run and verify
@@ -196,7 +193,7 @@ public class ConfigureHudsonTest extends BaseUITest {
         selenium.click("link=Configure System");
         waitForTextPresent("System Message", null);
         selenium.type("quiet_period", "0");
-        selenium.click("//button[contains(text(), 'Save')]");
+        selenium.click("name=Submit"); 
 
         //Create a Job that should run immediately
         waitForTextPresent("Manage Hudson", null);
@@ -206,7 +203,7 @@ public class ConfigureHudsonTest extends BaseUITest {
         selenium.waitForPageToLoad("30000");
         selenium.type("name", "time-test");
         selenium.click("mode");
-        selenium.click("//button[@type='button']");
+        selenium.click("id=ok");
         selenium.waitForPageToLoad("30000");
         selenium.click("//span[@id='yui-gen2']/span/button");
         if (SystemUtils.isWindows()) {
@@ -214,14 +211,14 @@ public class ConfigureHudsonTest extends BaseUITest {
             selenium.click("link=Execute Windows batch command");
             waitForTextPresent("Execute Windows batch command", null);
             selenium.type("command", "PING 1.1.1.1 -n 1 -w 3000  1>NUL");
-            selenium.click("//button[contains(text(), 'Save')]");
+            selenium.click("name=Submit"); 
             selenium.waitForPageToLoad("30000");
         } else {
             //On non-windows use shell
             selenium.click("link=Execute shell");
             waitForTextPresent("Execute shell", null);
             selenium.type("command", "sleep 3");
-            selenium.click("//button[contains(text(), 'Save')]");
+            selenium.click("name=Submit"); 
             selenium.waitForPageToLoad("30000");
         }
         //Run and verify
@@ -241,7 +238,7 @@ public class ConfigureHudsonTest extends BaseUITest {
         selenium.click("link=Configure System");
         waitForTextPresent("System Message", null);
         selenium.type("retry_count", "1");
-        selenium.click("//button[contains(text(), 'Save')]");
+        selenium.click("name=Submit"); 
 
         //Create a Job that should run immediately
         waitForTextPresent("Manage Hudson", null);
@@ -251,10 +248,10 @@ public class ConfigureHudsonTest extends BaseUITest {
         selenium.waitForPageToLoad("30000");
         selenium.type("name", "scm-test");
         selenium.click("mode");
-        selenium.click("//button[@type='button']");
+        selenium.click("id=ok");
         selenium.click(SUBVERSION_LBL_SELECT_EXP);
         selenium.type("svn.remote.loc", "http://127.0.0.1/");
-        selenium.click("//button[contains(text(), 'Save')]");
+        selenium.click("name=Submit"); 
         
         //Run and verify
         selenium.waitForPageToLoad("30000");
@@ -276,13 +273,14 @@ public class ConfigureHudsonTest extends BaseUITest {
         selenium.click("link=New Node");
         selenium.type("id=name", "new-slave");
         selenium.click("name=mode");
-        selenium.click("id=ok-button");
+        selenium.click("id=ok");
         selenium.waitForPageToLoad("30000");
-        selenium.click("//button[contains(text(), 'Save')]");
-        selenium.open("/computer/new-slave");
-        waitForTextPresent("Delete Slave");
-        selenium.click("link=Delete Slave");
-        selenium.click("id=confirm");
+        selenium.click("name=Submit"); 
+        selenium.click("xpath=(//a[contains(text(),'new-slave')])[2]");
+    //        selenium.open("/computer/new-slave");
+        waitForTextPresent("Delete Node");
+        selenium.click("link=Delete Node");
+        selenium.click("//button[@type='button']");
         selenium.waitForPageToLoad("30000");
         assertFalse(selenium.getLocation().contains("new-slave"));
     }

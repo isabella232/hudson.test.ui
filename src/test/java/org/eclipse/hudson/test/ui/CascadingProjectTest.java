@@ -9,7 +9,7 @@
  *
  * Contributors:
  *
- * Anton Kozak
+ * Anton Kozak, Latha Amujuri
  *
  *
  *******************************************************************************/
@@ -34,7 +34,7 @@ public class CascadingProjectTest extends BaseUITest {
         "//a[contains(@reseturl,'/job/child-upstream/resetProjectProperty?propertyName=blockBuildWhenUpstreamBuilding')]";
     private static final String SCM_RESET_LINK_EXP =
         "//a[contains(@reseturl,'/job/child-scm/resetProjectProperty?propertyName=scm')]";
-    private static final String CONFIG_SAVE_BUTTON_EXP = "//button[contains(text(), 'Save')]";
+    private static final String CONFIG_SAVE_BUTTON_EXP = "name=Submit";
 
     private Selenium selenium;
 
@@ -61,16 +61,16 @@ public class CascadingProjectTest extends BaseUITest {
     @Test
     public void testCascadingBlockBuildUpstream() {
         prepareCascading("parent-upstream", "child-upstream");
-        selenium.click("//span[@id='yui-gen5']/span/button");
+	selenium.click("xpath=(//input[@value='Advanced...'])[2]"); 
         selenium.click("//input[@name='blockBuildWhenUpstreamBuilding']");
         selenium.click(CONFIG_SAVE_BUTTON_EXP);
         selenium.open("/job/child-upstream/configure");
         selenium.waitForPageToLoad("30000");
-        selenium.click("//span[@id='yui-gen5']/span/button");
+        selenium.click("xpath=(//input[@value='Advanced...'])[2]"); 
         assertTrue(selenium.isElementPresent(BLOCK_BUILD_UPSTREAM_RESET_LINK_EXP));
         selenium.click(BLOCK_BUILD_UPSTREAM_RESET_LINK_EXP);
         selenium.waitForPageToLoad("30000");
-        selenium.click("//span[@id='yui-gen5']/span/button");
+        selenium.click("xpath=(//input[@value='Advanced...'])[2]"); 
         assertFalse(selenium.isElementPresent(BLOCK_BUILD_UPSTREAM_RESET_LINK_EXP));
     }
 
@@ -103,7 +103,7 @@ public class CascadingProjectTest extends BaseUITest {
         selenium.click("link=New Job");
         selenium.type("name", "child2");
         selenium.click("mode");
-        selenium.click("//button[@type='button']");
+        selenium.click("id=ok");
         selenium.waitForPageToLoad("30000");
         selenium.select("//select[@name='cascadingProjectName']", "child1");
         selenium.waitForPageToLoad("30000");
@@ -133,7 +133,7 @@ public class CascadingProjectTest extends BaseUITest {
         selenium.waitForPageToLoad("30000");
         selenium.type("name", cascadingParentName);
         selenium.click("mode");
-        selenium.click("//button[@type='button']");
+        selenium.click("id=ok");
         selenium.waitForPageToLoad("30000");
         selenium.click(CONFIG_SAVE_BUTTON_EXP);
         //Creates cascading child.
@@ -142,7 +142,7 @@ public class CascadingProjectTest extends BaseUITest {
         selenium.click("link=New Job");
         selenium.type("name", cascadingChildName);
         selenium.click("mode");
-        selenium.click("//button[@type='button']");
+        selenium.click("id=ok");
         selenium.waitForPageToLoad("30000");
         selenium.select("//select[@name='cascadingProjectName']", cascadingParentName);
         selenium.waitForPageToLoad("30000");

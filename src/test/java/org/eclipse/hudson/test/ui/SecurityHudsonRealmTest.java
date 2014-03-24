@@ -9,7 +9,7 @@
  *
  * Contributors: 
  *
- *    Anton Kozak
+ *    Anton Kozak, Latha Amujuri
  *      
  *
  *******************************************************************************/
@@ -33,21 +33,24 @@ public class SecurityHudsonRealmTest extends BaseUITest {
 
     private static final String HUDSUN_USER_DB_LBL_SELECT_EXP = "//label[contains(text(),'own user database')]";
     private static final String ANYONE_CAN_DO_ANUTHING_LBL_SELECT_EXP = "//label[contains(text(),'Anyone can do anything')]";
-    private static final String CONFIG_SAVE_SELECT_EXP = "//button[contains(text(),'Save')]";
+    private static final String CONFIG_SAVE_SELECT_EXP = "name=Submit";
     private static final String SUBVERSION_LBL_SELECT_EXP = "//label[contains(text(),'Subversion')]";
 
 
     @Test
     public void testAnyoneCanDoAnything() {
         Selenium selenium = getSelenium();
-        selenium.open("/configure");
+        //Open the Security Management page
+        selenium.open("/securityManager");
         waitForTextPresent("New Job");
-        selenium.click("cb0");
+        //Click on Enable Security Checkbox
+        selenium.click("id=cb0");
 
         selenium.click(HUDSUN_USER_DB_LBL_SELECT_EXP);
         selenium.click(ANYONE_CAN_DO_ANUTHING_LBL_SELECT_EXP);
         selenium.click(CONFIG_SAVE_SELECT_EXP);
         selenium.waitForPageToLoad("30000");
+        //Signup new user
         selenium.open("/signup");
         selenium.waitForPageToLoad("30000");
         selenium.type("username", "admin");
@@ -55,7 +58,7 @@ public class SecurityHudsonRealmTest extends BaseUITest {
         selenium.type("password2", "admin");
         selenium.type("fullname", "admin");
         selenium.type("email", "admin@gmail.com");
-        selenium.click("//button[@type='button']");
+        selenium.click("name=Submit"); 
         selenium.waitForPageToLoad("30000");
         //run test job
         selenium.open("/");
@@ -64,14 +67,11 @@ public class SecurityHudsonRealmTest extends BaseUITest {
         selenium.waitForPageToLoad("30000");
         selenium.type("name", "testHudsonRealmAnyoneCanDoAnything");
         selenium.click("mode");
-        selenium.click("//button[@type='button']");
+        selenium.click("id=ok");
         selenium.waitForPageToLoad("30000");
         selenium.click(SUBVERSION_LBL_SELECT_EXP);
         selenium.type("svn.remote.loc", "http://svn.apache.org/repos/asf/subversion/trunk/doc");
-//        selenium.click("//span[@id='yui-gen2']/span/button");
-//        selenium.click("link=Invoke top-level Maven targets");
-//        selenium.type("textarea._.targets", "clean");
-        selenium.click("//span[@id='yui-gen21']/span/button");
+        selenium.click(CONFIG_SAVE_SELECT_EXP);
         selenium.waitForPageToLoad("30000");
         selenium.click("link=Build Now");
         selenium.waitForPageToLoad("30000");

@@ -9,7 +9,7 @@
  *
  * Contributors: 
  *
- *    Anton Kozak
+ *    Anton Kozak, Latha Amujuri
  *      
  *
  *******************************************************************************/
@@ -17,7 +17,6 @@
 package org.eclipse.hudson.test.ui;
 
 import com.thoughtworks.selenium.Selenium;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -45,14 +44,11 @@ public class FreestyleJobTest extends BaseUITest {
         selenium.waitForPageToLoad("30000");
         selenium.type("name", "subversion-plugin");
         selenium.click("mode");
-        selenium.click("//button[@type='button']");
+        selenium.click("id=ok");
         selenium.waitForPageToLoad("30000");
         selenium.click(SUBVERSION_LBL_SELECT_EXP);
         selenium.type("svn.remote.loc", "http://svn.apache.org/repos/asf/subversion/trunk/doc");
-//        selenium.click("//span[@id='yui-gen2']/span/button");
-//        selenium.click("link=Invoke Maven 2 (Legacy)");
-//        selenium.type("textarea._.targets", "clean install -DskipTests");
-        selenium.click("//span[@id='yui-gen21']/span/button");
+        selenium.click("name=Submit");
         selenium.waitForPageToLoad("30000");
         selenium.click("link=Build Now");
         selenium.waitForPageToLoad("30000");
@@ -69,14 +65,11 @@ public class FreestyleJobTest extends BaseUITest {
         selenium.waitForPageToLoad("30000");
         selenium.type("name", "git-plugin");
         selenium.click("mode");
-        selenium.click("//button[@type='button']");
+        selenium.click("id=ok");
         selenium.waitForPageToLoad("30000");
         selenium.click(GIT_LBL_SELECT_EXP);
-        selenium.type("git.repo.url", "git://github.com/hudson-plugins/git-plugin.git");
-//        selenium.click("//span[@id='yui-gen2']/span/button");
-//        selenium.click("link=Invoke Maven 2 (Legacy)");
-//        selenium.type("textarea._.targets", "clean install -DskipTests");
-        selenium.click("//span[@id='yui-gen21']/span/button");
+        selenium.type("git.repo.url", "https://github.com/hudson3-plugins/delete-team-cli-plugin.git");
+        selenium.click("name=Submit");
         selenium.waitForPageToLoad("30000");
         selenium.click("link=Build Now");
         selenium.waitForPageToLoad("30000");
@@ -93,12 +86,12 @@ public class FreestyleJobTest extends BaseUITest {
         selenium.waitForPageToLoad("30000");
         selenium.type("name", "cvs-plugin");
         selenium.click("mode");
-        selenium.click("//button[@type='button']");
+        selenium.click("id=ok");
         selenium.waitForPageToLoad("30000");
         selenium.click(CVS_LBL_SELECT_EXP);
         selenium.type("_.cvsroot", ":pserver:anonymous:@tortoisecvs.cvs.sourceforge.net:/cvsroot/tortoisecvs");
         selenium.type("_.module", "docs");
-        selenium.click("//span[@id='yui-gen21']/span/button");
+        selenium.click("name=Submit");
         selenium.waitForPageToLoad("30000");
         selenium.click("link=Build Now");
         selenium.waitForPageToLoad("30000");
